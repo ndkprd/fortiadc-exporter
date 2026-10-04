@@ -1,0 +1,32 @@
+# Prometheus Operator. A ServiceMonitor scrapes one URL per endpoint, so each
+# appliance needs its own endpoint entry with its own ?target=. Add one entry
+# per key under `fortiadc:` in the ConfigMap.
+# The job label defaults to the Service name ("fortiadc-exporter"); the
+# dashboard's JOB variable picks it up. jobLabel can override it.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fortiadc-exporter
+  labels: {release: prometheus}   # match your Prometheus serviceMonitorSelector
+spec:
+  selector:
+    matchLabels: {app.kubernetes.io/name: fortiadc-exporter}
+  endpoints:
+    - port: http
+      path: /probe
+      interval: 1m
+      scrapeTimeout: 30s
+      params:
+        target: [adc-01]
+      relabelings:
+        - targetLabel: instance
+          replacement: adc-01
+    # - port: http
+    #   path: /probe
+    #   interval: 1m
+    #   scrapeTimeout: 30s
+    #   params:
+    #     target: [adc-02]
+    #   relabelings:
+    #     - targetLabel: instance
+    #       replacement: adc-02

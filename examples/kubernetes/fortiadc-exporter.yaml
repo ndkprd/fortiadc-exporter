@@ -1,0 +1,70 @@
+# Exporter Deployment, Service, ConfigMap and Secret. Adjust names, image and targets.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fortiadc-exporter
+data:
+  config.yml: |
+    fortiadc:
+      adc-01:
+        url: "https://10.0.0.10"
+        api_key_env: ADC01_API_KEY   # read from the Secret below
+        vdom: "root"
+        insecure_skip_verify: true
+    listen_address: ":9634"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fortiadc-exporter
+type: Opaque
+stringData:
+  ADC01_API_KEY: "changeme"   # key of a read-only FortiADC REST API administrator
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fortiadc-exporter
+  labels: {app.kubernetes.io/name: fortiadc-exporter}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app.kubernetes.io/name: fortiadc-exporter}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: fortiadc-exporter}
+    spec:
+      containers:
+        - name: fortiadc-exporter
+          image: fortiadc-exporter:0.1.0   # replace with your registry path
+          args: ["-config", "/etc/fortiadc-exporter/config.yml"]
+          ports:
+            - {name: http, containerPort: 9634}
+          envFrom:
+            - secretRef: {name: fortiadc-exporter}
+          volumeMounts:
+            - {name: config, mountPath: /etc/fortiadc-exporter, readOnly: true}
+          readinessProbe:
+            httpGet: {path: /, port: http}
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {memory: 128Mi}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+      volumes:
+        - name: config
+          configMap: {name: fortiadc-exporter}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fortiadc-exporter
+  labels: {app.kubernetes.io/name: fortiadc-exporter}
+spec:
+  selector: {app.kubernetes.io/name: fortiadc-exporter}
+  ports:
+    - {name: http, port: 9634, targetPort: http}

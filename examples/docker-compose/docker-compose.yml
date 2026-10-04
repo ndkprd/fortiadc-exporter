@@ -1,0 +1,27 @@
+# Exporter + Prometheus + Grafana. Copy ../../config.yml.example to ./config.yml
+# and put your FortiADC target(s) in it, then: docker compose up -d --build
+# Grafana: http://localhost:3000 (admin / admin), dashboard "FortiADC Overview".
+services:
+  fortiadc-exporter:
+    build: ../..
+    restart: unless-stopped
+    volumes:
+      - ./config.yml:/etc/fortiadc-exporter/config.yml:ro
+    # keep this port internal; the exporter has no authentication
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../grafana/dashboards:/var/lib/grafana/dashboards:ro

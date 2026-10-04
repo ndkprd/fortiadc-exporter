@@ -1,0 +1,1512 @@
+{
+  "id": null,
+  "uid": "fortiadc-overview",
+  "title": "FortiADC Overview",
+  "description": "Health and traffic of FortiADC appliances scraped through fortiadc-exporter /probe: are the devices reachable, are virtual servers healthy, is anything running hot or about to expire. For on-call and network engineers.",
+  "tags": [
+    "fortiadc",
+    "exporter"
+  ],
+  "editable": true,
+  "graphTooltip": 1,
+  "timezone": "browser",
+  "refresh": "1m",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "fiscalYearStartMonth": 0,
+  "liveNow": false,
+  "weekStart": "",
+  "schemaVersion": 39,
+  "version": 1,
+  "links": [],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "PROMETHEUS_DS",
+        "label": "Prometheus",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "options": [],
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "name": "JOB",
+        "label": "Job",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${PROMETHEUS_DS}"
+        },
+        "query": "label_values(fortiadc_up, job)",
+        "definition": "label_values(fortiadc_up, job)",
+        "refresh": 2,
+        "sort": 1,
+        "hide": 0,
+        "multi": false,
+        "includeAll": false,
+        "regex": "",
+        "options": [],
+        "skipUrlSync": false,
+        "current": {
+          "selected": true,
+          "text": "fortiadc",
+          "value": "fortiadc"
+        }
+      },
+      {
+        "name": "instance",
+        "label": "Appliance",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${PROMETHEUS_DS}"
+        },
+        "query": "label_values(fortiadc_up{job=\"$JOB\"}, instance)",
+        "definition": "label_values(fortiadc_up{job=\"$JOB\"}, instance)",
+        "refresh": 2,
+        "sort": 1,
+        "hide": 0,
+        "multi": true,
+        "includeAll": true,
+        "regex": "",
+        "options": [],
+        "skipUrlSync": false,
+        "current": {},
+        "allValue": ".*"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Appliances down",
+      "description": "Appliances whose last probe failed on every API call (fortiadc_up = 0). Red when any is down.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "count(fortiadc_up{job=\"$JOB\", instance=~\"$instance\"} == 0) or vector(0)",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Endpoints failing",
+      "description": "API endpoints that failed in the last probe while the appliance still answered, e.g. an endpoint missing on that firmware or a key without permission.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "count(fortiadc_scrape_endpoint_up{job=\"$JOB\", instance=~\"$instance\"} == 0) or vector(0)",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Unhealthy virtual servers",
+      "description": "Virtual servers not reporting HEALTHY. Red when any is.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "count(fortiadc_virtual_server_healthy{job=\"$JOB\", instance=~\"$instance\"} == 0) or vector(0)",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Highest CPU",
+      "description": "Highest CPU usage across the selected appliances. Orange above 70%, red above 85%.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.7
+              },
+              {
+                "color": "red",
+                "value": 0.85
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "max(fortiadc_cpu_usage_ratio{job=\"$JOB\", instance=~\"$instance\"})",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Highest memory",
+      "description": "Highest memory usage across the selected appliances. Orange above 80%, red above 90%.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.8
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "max(fortiadc_memory_usage_ratio{job=\"$JOB\", instance=~\"$instance\"})",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Soonest licence expiry",
+      "description": "Days until the nearest FortiGuard service licence expires (negative = already expired). Orange within 30 days, red when expired.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "d",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0
+              },
+              {
+                "color": "green",
+                "value": 30
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "(min(fortiadc_license_expiry_timestamp_seconds{job=\"$JOB\", instance=~\"$instance\"}) - time()) / 86400",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "row",
+      "title": "Trends",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "CPU usage",
+      "description": "CPU usage per appliance. Dashed line marks the 85% alert level.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.85
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "max": 1,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_cpu_usage_ratio{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "{{instance}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "Memory usage",
+      "description": "Memory usage per appliance. Dashed line marks the 90% alert level.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 5,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "max": 1,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_memory_usage_ratio{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "{{instance}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Probe duration",
+      "description": "How long a full probe of each appliance takes. Prometheus scrape_timeout must stay above this.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 5,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_scrape_duration_seconds{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "{{instance}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Traffic by virtual server (top 10)",
+      "description": "Bytes per second handled by the ten busiest virtual servers, in plus out.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "topk(10, sum by (virtual_server) (rate(fortiadc_virtual_server_bytes_total{job=\"$JOB\", instance=~\"$instance\"}[$__rate_interval])))",
+          "legendFormat": "{{virtual_server}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "New sessions by virtual server (top 10)",
+      "description": "New sessions per second on the ten busiest virtual servers.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "topk(10, sum by (virtual_server) (rate(fortiadc_virtual_server_sessions_total{job=\"$JOB\", instance=~\"$instance\"}[$__rate_interval])))",
+          "legendFormat": "{{virtual_server}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "GSLB responses by host (top 10)",
+      "description": "DNS responses per second for the ten busiest GSLB hosts.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 13,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisLabel": "",
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "topk(10, sum by (gslb_host) (rate(fortiadc_gslb_host_responses_total{job=\"$JOB\", instance=~\"$instance\"}[$__rate_interval])))",
+          "legendFormat": "{{gslb_host}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "row",
+      "title": "Details",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 21,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 15,
+      "type": "table",
+      "title": "Virtual servers",
+      "description": "Health and current sessions per virtual server. Healthy: 1 = HEALTHY, 0 = anything else.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_virtual_server_healthy{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "B",
+          "expr": "fortiadc_virtual_server_current_sessions{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "instance": "Appliance",
+              "vdom": "vdom",
+              "virtual_server": "Virtual server",
+              "Value #A": "Healthy",
+              "Value #B": "Sessions"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "table",
+      "title": "GSLB hosts",
+      "description": "Raw FortiADC GSLB host status code (unmapped; map values with Grafana value mappings) and responses served in the selected range.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_gslb_host_status{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "B",
+          "expr": "increase(fortiadc_gslb_host_responses_total{job=\"$JOB\", instance=~\"$instance\"}[$__range])",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "instance": "Appliance",
+              "vdom": "vdom",
+              "gslb_host": "GSLB host",
+              "Value #A": "Status code",
+              "Value #B": "Responses"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "table",
+      "title": "Licence days left",
+      "description": "Days until each FortiGuard service licence expires (negative = expired).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "(fortiadc_license_expiry_timestamp_seconds{job=\"$JOB\", instance=~\"$instance\"} - time()) / 86400",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "instance": "Appliance",
+              "service": "Service",
+              "Value": "Days left"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "table",
+      "title": "Appliances",
+      "description": "Identity, uptime and HA state of each appliance.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 32,
+        "w": 16,
+        "h": 10
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_info{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "B",
+          "expr": "fortiadc_uptime_seconds{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "C",
+          "expr": "fortiadc_ha_peers{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "__auto",
+          "editorMode": "code",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "job": true
+            },
+            "renameByName": {
+              "instance": "Appliance",
+              "device_name": "Name",
+              "serial": "Serial",
+              "firmware": "Firmware",
+              "Value #A": "Info",
+              "Value #B": "Uptime",
+              "Value #C": "HA peers"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "state-timeline",
+      "title": "Endpoint status",
+      "description": "Per-endpoint success of each probe: green = ok, red = failed.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${PROMETHEUS_DS}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 24,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "failed",
+                  "color": "red"
+                },
+                "1": {
+                  "text": "ok",
+                  "color": "green"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {},
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${PROMETHEUS_DS}"
+          },
+          "refId": "A",
+          "expr": "fortiadc_scrape_endpoint_up{job=\"$JOB\", instance=~\"$instance\"}",
+          "legendFormat": "{{instance}} {{endpoint}}",
+          "editorMode": "code",
+          "range": true,
+          "instant": false,
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "row",
+      "title": "About this dashboard",
+      "collapsed": true,
+      "gridPos": {
+        "x": 0,
+        "y": 50,
+        "w": 24,
+        "h": 1
+      },
+      "panels": [
+        {
+          "id": 21,
+          "type": "text",
+          "title": "About",
+          "gridPos": {
+            "x": 0,
+            "y": 51,
+            "w": 24,
+            "h": 6
+          },
+          "options": {
+            "mode": "markdown",
+            "content": "Built for fortiadc-exporter. Scrape /probe?target=<appliance> with a Prometheus job (see examples/docker-compose/prometheus.yml). The exporter's own metrics (fortiadc_exporter_*) are served on /metrics under a different job and are not shown here.\n\nfortiadc_gslb_host_status is the raw device code; add value mappings once you know what each code means in your environment."
+          }
+        }
+      ]
+    }
+  ]
+}

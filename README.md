@@ -38,7 +38,7 @@ fortiadc:
 listen_address: ":9634"
 ```
 
-Prometheus scrape config: see `prometheus.yml.example`. Metric catalog: `docs/metrics.md`.
+Prometheus scrape config: see `prometheus.yml.example`. Docker Compose stack, Kubernetes `ServiceMonitor` and a Grafana dashboard: see `examples/`. Metric catalog: `docs/metrics.md`.
 
 ## Notes
 
