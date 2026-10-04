@@ -1,0 +1,55 @@
+{
+  "payload": [
+    {
+      "_nondeletable": 0,
+      "_noneditable": 0,
+      "default-feedback-ip": "192.0.2.1",
+      "default-feedback-ip6": "::",
+      "domain-name": "domain-name-1",
+      "fortiview": "enable",
+      "host-domain": "host-domain-2",
+      "host-name": "host-name-3",
+      "hoststatus": 21,
+      "load-balance-method": "global-availability",
+      "mkey": "mkey-4",
+      "persistence": "enable",
+      "respond-single-record": "enable",
+      "total-response": 553,
+      "vs_pool_list_count": 1
+    },
+    {
+      "_nondeletable": 0,
+      "_noneditable": 0,
+      "default-feedback-ip": "192.0.2.1",
+      "default-feedback-ip6": "::",
+      "domain-name": "domain-name-1",
+      "fortiview": "enable",
+      "host-domain": "host-domain-5",
+      "host-name": "host-name-6",
+      "hoststatus": 21,
+      "load-balance-method": "global-availability",
+      "mkey": "mkey-7",
+      "persistence": "enable",
+      "respond-single-record": "enable",
+      "total-response": 155,
+      "vs_pool_list_count": 1
+    },
+    {
+      "_nondeletable": 0,
+      "_noneditable": 0,
+      "default-feedback-ip": "192.0.2.1",
+      "default-feedback-ip6": "::",
+      "domain-name": "domain-name-1",
+      "fortiview": "enable",
+      "host-domain": "host-domain-8",
+      "host-name": "host-name-9",
+      "hoststatus": 21,
+      "load-balance-method": "global-availability",
+      "mkey": "mkey-10",
+      "persistence": "enable",
+      "respond-single-record": "enable",
+      "total-response": 342,
+      "vs_pool_list_count": 1
+    }
+  ]
+}

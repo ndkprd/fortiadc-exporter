@@ -1,0 +1,7 @@
+.git
+.agents
+.envrc
+config.yml
+fortiadc-exporter
+docs
+scripts

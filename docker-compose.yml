@@ -1,0 +1,9 @@
+services:
+  fortiadc-exporter:
+    build: .
+    image: fortiadc-exporter
+    restart: unless-stopped
+    ports:
+      - "9634:9634"
+    volumes:
+      - ./config.yml:/etc/fortiadc-exporter/config.yml:ro

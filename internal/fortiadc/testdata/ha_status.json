@@ -1,0 +1,21 @@
+{
+  "payload": {
+    "cfg_src": "N/A",
+    "cfg_sync_state": "N/A",
+    "dup_node_id_cnt": 0,
+    "group_id": 0,
+    "l4_sync_session_persis_recv_pkts": 0,
+    "l4_sync_session_persis_send_pkts": 0,
+    "l7_sync_persist_recv_pkts": 0,
+    "l7_sync_persist_send_pkts": 0,
+    "last_changed_status_reason": "",
+    "last_changed_status_time": "Fri Oct 18 10:26:29 2024\n",
+    "local_address": "local_address-1",
+    "local_nodeid": 0,
+    "local_sn": "local_sn-2",
+    "local_state": "Standalone",
+    "mode": "standalone",
+    "peers": [],
+    "verson_missmatch": 0
+  }
+}

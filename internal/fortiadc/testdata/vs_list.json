@@ -1,0 +1,91 @@
+{
+  "payload": [
+    {
+      "concurrent": [],
+      "config": {
+        "address": "address-1",
+        "availability": "HEALTHY",
+        "content-routing": "disable",
+        "content-routing-list": "",
+        "fortiview": "disable",
+        "mkey": "mkey-2",
+        "pool": "pool-3",
+        "port": "541 ",
+        "schedule-list": "disable",
+        "schedule-pool-list": "",
+        "schedule-pool-list-full": [],
+        "traffic-group": "default",
+        "type": "L7",
+        "uniq_rs_num": 1
+      },
+      "connections": [],
+      "throughput": []
+    },
+    {
+      "concurrent": [
+        0,
+        0,
+        0
+      ],
+      "config": {
+        "address": "address-4",
+        "availability": "DEAD",
+        "content-routing": "disable",
+        "content-routing-list": "",
+        "fortiview": "enable",
+        "mkey": "mkey-5",
+        "pool": "pool-6",
+        "port": "6443 ",
+        "schedule-list": "disable",
+        "schedule-pool-list": "",
+        "schedule-pool-list-full": [],
+        "traffic-group": "default",
+        "type": "L4",
+        "uniq_rs_num": 3
+      },
+      "connections": [
+        0,
+        0,
+        0
+      ],
+      "throughput": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "concurrent": [
+        0,
+        0,
+        0
+      ],
+      "config": {
+        "address": "address-4",
+        "availability": "DEAD",
+        "content-routing": "disable",
+        "content-routing-list": "",
+        "fortiview": "enable",
+        "mkey": "mkey-7",
+        "pool": "pool-8",
+        "port": "22623 ",
+        "schedule-list": "disable",
+        "schedule-pool-list": "",
+        "schedule-pool-list-full": [],
+        "traffic-group": "default",
+        "type": "L4",
+        "uniq_rs_num": 3
+      },
+      "connections": [
+        0,
+        0,
+        0
+      ],
+      "throughput": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

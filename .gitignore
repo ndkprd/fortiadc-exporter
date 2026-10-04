@@ -1,0 +1,5 @@
+.envrc
+config.yml
+/fortiadc-exporter
+.agents/
+ROADMAP.md

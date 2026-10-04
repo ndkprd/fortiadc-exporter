@@ -1,0 +1,10 @@
+fortiadc:
+  # Target name = value of ?target= on /probe. Machine-level data (CPU, HA,
+  # license) always uses vdom "root"; vdom below scopes virtual servers and GSLB.
+  adc-01.example.com:
+    url: "https://10.0.0.10"
+    api_key: "changeme"        # key of a read-only REST API administrator
+    # api_key_env: "ADC01_API_KEY"  # optional: env var overriding api_key
+    vdom: "root"
+    insecure_skip_verify: true
+listen_address: ":9634"

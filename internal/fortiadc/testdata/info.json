@@ -1,0 +1,12 @@
+{
+  "payload": {
+    "hostName": "hostName-1",
+    "systemTime": "Sun Oct  4 09:32:22 2026",
+    "systemUpTime": "715d, 23h, 6m, 5s",
+    "serialNumber": "serialNumber-2",
+    "firmwareVersion": "FortiADC-200D v7.2.1,build0220,230414 (GA)",
+    "vdoms": "10",
+    "isSystemAdmin": false,
+    "isSystemWritable": false
+  }
+}

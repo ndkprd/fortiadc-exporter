@@ -1,0 +1,47 @@
+{
+  "payload": [
+    {
+      "app_response": 0,
+      "client_rtt": 0,
+      "current_sessions": 5,
+      "in_bytes": 0,
+      "limit_sessions": 0,
+      "mkey": "mkey-1",
+      "out_bytes": 0,
+      "request_errors": 0,
+      "requests": 0,
+      "response_errors": 0,
+      "server_rtt": 0,
+      "total_sessions": 0
+    },
+    {
+      "app_response": 0,
+      "client_rtt": 0,
+      "current_sessions": 0,
+      "in_bytes": 0,
+      "limit_sessions": 0,
+      "mkey": "mkey-2",
+      "out_bytes": 0,
+      "request_errors": 0,
+      "requests": 0,
+      "response_errors": 0,
+      "server_rtt": 0,
+      "total_sessions": 0
+    },
+    {
+      "app_response": 0,
+      "client_rtt": 0,
+      "current_sessions": 0,
+      "in_bytes": 0,
+      "limit_sessions": 0,
+      "mkey": "mkey-3",
+      "out_bytes": 0,
+      "request_errors": 0,
+      "requests": 0,
+      "response_errors": 0,
+      "server_rtt": 0,
+      "total_sessions": 0
+    },
+    null
+  ]
+}

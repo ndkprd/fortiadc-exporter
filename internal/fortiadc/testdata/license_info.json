@@ -1,0 +1,122 @@
+{
+  "payload": {
+    "fortiguard": {
+      "ADDB": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "372571964-10-04 23:56:13",
+        "version": "00001.00039"
+      },
+      "AVDB": {
+        "expire": "2022-06-29",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00001.00000"
+      },
+      "AVEN": {
+        "expire": "2022-06-29",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00006.00006"
+      },
+      "COMP": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "24 X 7 support",
+        "update_time": "2026-10-04 04:00:05",
+        "version": "00001.00001"
+      },
+      "ENHN": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "24 X 7 support",
+        "update_time": "2026-10-04 04:00:05",
+        "version": "00001.00001"
+      },
+      "ETDB": {
+        "expire": "2022-06-29",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00001.00000"
+      },
+      "EXDB": {
+        "expire": "2022-06-29",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00001.00000"
+      },
+      "FMWR": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2026-10-04 04:00:05",
+        "version": "00001.00001"
+      },
+      "FURL": {
+        "expire": "Unknown",
+        "expiry": 0,
+        "support_level": "Unknown support",
+        "update_time": "104142962-10-04 15:39:12",
+        "version": "00001.00001"
+      },
+      "HCDB": {
+        "expire": "Unknown",
+        "expiry": 0,
+        "support_level": "",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00000.00000"
+      },
+      "HDWR": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "2026-10-04 04:00:05",
+        "version": "00001.00001"
+      },
+      "IPGE": {
+        "expire": "Unknown",
+        "expiry": 0,
+        "support_level": "",
+        "update_time": "104142962-10-04 08:58:40",
+        "version": "00002.00195"
+      },
+      "IRDB": {
+        "expire": "2023-01-03",
+        "expiry": 2,
+        "support_level": "8 X 5 support",
+        "update_time": "265502353-10-04 20:46:21",
+        "version": "00004.00716"
+      },
+      "NIDB": {
+        "expire": "2019-08-04",
+        "expiry": 2,
+        "support_level": "Unknown support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00006.00741"
+      },
+      "NIEN": {
+        "expire": "2019-08-04",
+        "expiry": 2,
+        "support_level": "Unknown support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00004.00021"
+      },
+      "NIET": {
+        "expire": "Unknown",
+        "expiry": 0,
+        "support_level": "Unknown support",
+        "update_time": "2024-08-27 13:33:07",
+        "version": "00000.00000"
+      },
+      "loginId": "loginId-1",
+      "registration": "Registered"
+    },
+    "isSystemAdmin": false,
+    "isSystemWritable": false
+  }
+}
